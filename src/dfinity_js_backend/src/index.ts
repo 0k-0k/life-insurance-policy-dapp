@@ -50,11 +50,12 @@ export function createInsurancePolicy(
   payload: LifeInsurancePolicyPayload
 ): Result<LifeInsurancePolicy, string> {
   try {
-    // ID Validation
+    // Input Validation
     if (
       !payload.policyHolderName ||
-      !payload.policyStartDate ||
-      !payload.policyEndDate
+      payload.coverageAmount <= 0 ||
+      payload.premiumAmount <= 0 ||
+      payload.policyStartDate >= payload.policyEndDate
     ) {
       return Result.Err<LifeInsurancePolicy, string>("Invalid payload");
     }
@@ -76,7 +77,7 @@ export function createInsurancePolicy(
     return Result.Ok<LifeInsurancePolicy, string>(insurancePolicy);
   } catch (error) {
     return Result.Err<LifeInsurancePolicy, string>(
-      "Failed to create insurance policy"
+      `Failed to create insurance policy: ${error.message}`
     );
   }
 }
@@ -87,8 +88,8 @@ export function getInsurancePolicy(
   id: string
 ): Result<LifeInsurancePolicy, string> {
   try {
-    // ID Validation
-    if (typeof id !== "string") {
+    // Input Validation
+    if (typeof id !== "string" || id.trim() === "") {
       return Result.Err<LifeInsurancePolicy, string>("Invalid ID parameter.");
     }
 
@@ -101,7 +102,7 @@ export function getInsurancePolicy(
     });
   } catch (error) {
     return Result.Err<LifeInsurancePolicy, string>(
-      "An error occurred while retrieving insurance policy by ID."
+      `An error occurred while retrieving insurance policy by ID: ${error.message}`
     );
   }
 }
@@ -113,12 +114,10 @@ export function getAllInsurancePolicies(): Result<
   string
 > {
   try {
-    // Return all insurance policies for the current user
-
     return Result.Ok(insurancePolicyStorage.values());
   } catch (error) {
     return Result.Err<Vec<LifeInsurancePolicy>, string>(
-      "Error retrieving insurance policies"
+      `Error retrieving insurance policies: ${error.message}`
     );
   }
 }
@@ -130,18 +129,16 @@ export function updateInsurancePolicy(
   payload: LifeInsurancePolicyPayload
 ): Result<LifeInsurancePolicy, string> {
   try {
-    // ID Validation
-    if (typeof id !== "string") {
-      return Result.Err<LifeInsurancePolicy, string>("Invalid ID parameter.");
-    }
-
-    // Payload Validation
+    // Input Validation
     if (
+      typeof id !== "string" ||
+      id.trim() === "" ||
       !payload.policyHolderName ||
-      !payload.policyStartDate ||
-      !payload.policyEndDate
+      payload.coverageAmount <= 0 ||
+      payload.premiumAmount <= 0 ||
+      payload.policyStartDate >= payload.policyEndDate
     ) {
-      return Result.Err<LifeInsurancePolicy, string>("Invalid payload");
+      return Result.Err<LifeInsurancePolicy, string>("Invalid parameters.");
     }
 
     return match(insurancePolicyStorage.get(id), {
@@ -167,7 +164,7 @@ export function updateInsurancePolicy(
     });
   } catch (error) {
     return Result.Err<LifeInsurancePolicy, string>(
-      `Failed to update Insurance Policy with ID=${id}. Error: ${error}`
+      `Failed to update Insurance Policy with ID=${id}: ${error.message}`
     );
   }
 }
@@ -178,8 +175,8 @@ export function deleteInsurancePolicy(
   id: string
 ): Result<LifeInsurancePolicy, string> {
   try {
-    // ID Validation
-    if (typeof id !== "string") {
+    // Input Validation
+    if (typeof id !== "string" || id.trim() === "") {
       return Result.Err<LifeInsurancePolicy, string>("Invalid ID parameter.");
     }
 
@@ -195,7 +192,7 @@ export function deleteInsurancePolicy(
     });
   } catch (error) {
     return Result.Err<LifeInsurancePolicy, string>(
-      `Failed to delete Insurance Policy with ID=${id}. Error: ${error}`
+      `Failed to delete Insurance Policy with ID=${id}: ${error.message}`
     );
   }
 }
@@ -204,8 +201,8 @@ export function deleteInsurancePolicy(
 $update;
 export function fileClaim(id: string): Result<LifeInsurancePolicy, string> {
   try {
-    // ID Validation
-    if (typeof id !== "string") {
+    // Input Validation
+    if (typeof id !== "string" || id.trim() === "") {
       return Result.Err<LifeInsurancePolicy, string>("Invalid ID parameter.");
     }
 
@@ -233,14 +230,13 @@ export function fileClaim(id: string): Result<LifeInsurancePolicy, string> {
     });
   } catch (error) {
     return Result.Err<LifeInsurancePolicy, string>(
-      `Failed to claim Insurance Policy with ID=${id}. Error: ${error}`
+      `Failed to claim Insurance Policy with ID=${id}: ${error.message}`
     );
   }
 }
 
 // Cryptographic utility for generating random values
 globalThis.crypto = {
-  // @ts-ignore
   getRandomValues: () => {
     let array = new Uint8Array(32);
     for (let i = 0; i < array.length; i++) {
