@@ -1,4 +1,4 @@
-import { getDaoCanister, getLedgerCanister } from "./canisterFactory";
+import { getPolicyCanister, getLedgerCanister } from "./canisterFactory";
 import { getAuthClient } from "./auth";
 
 export async function initializeContract() {
@@ -10,6 +10,6 @@ export async function initializeContract() {
   window.auth.identity = authClient.getIdentity();
   window.auth.principal = authClient.getIdentity()?.getPrincipal();
   window.auth.principalText = authClient.getIdentity()?.getPrincipal().toText();
-  window.canister.dao = await getDaoCanister();
+  window.canister.policy = await getPolicyCanister();
   window.canister.ledger = await getLedgerCanister();
 }

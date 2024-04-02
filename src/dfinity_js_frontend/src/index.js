@@ -15,7 +15,12 @@ window.renderICPromise = initializeContract()
       </React.StrictMode>,
       document.getElementById("root")
     );
-  })
-  .catch(console.error);
-
+  }).catch(console.error);
+// ReactDOM.render(
+//   <React.StrictMode>
+//     <App />
+//   </React.StrictMode>,
+//   document.getElementById("root")
+// );
+// render(<App />, document.getElementById("root"));
 reportWebVitals();

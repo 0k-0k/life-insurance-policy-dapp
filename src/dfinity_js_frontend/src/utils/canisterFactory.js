@@ -1,13 +1,13 @@
 import { HttpAgent, Actor } from "@dfinity/agent";
-import { idlFactory as daoIDL } from "../../../declarations/dfinity_js_backend/dfinity_js_backend.did.js";
+import { idlFactory as policyIDL } from "../../../declarations/dfinity_js_backend/dfinity_js_backend.did.js";
 import { idlFactory as ledgerIDL } from "../../../declarations/ledger_canister/ledger_canister.did.js";
 
-const DAO_CANISTER_ID = "be2us-64aaa-aaaaa-qaabq-cai";
+const POLICY_CANISTER_ID = "bd3sg-teaaa-aaaaa-qaaba-cai";
 const LEDGER_CANISTER_ID = "ryjl3-tyaaa-aaaaa-aaaba-cai";
-const HOST = "http://localhost:4943";
+const HOST = "http://localhost:8080";
 
-export async function getDaoCanister() {
-  return await getCanister(DAO_CANISTER_ID, daoIDL);
+export async function getPolicyCanister() {
+  return await getCanister(POLICY_CANISTER_ID, policyIDL);
 }
 
 export async function getLedgerCanister() {

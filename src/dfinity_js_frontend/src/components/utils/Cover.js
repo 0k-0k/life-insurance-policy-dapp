@@ -1,35 +1,32 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Button } from "@mui/material";
-import { AccountBalanceWallet } from "@mui/icons-material";
+import { Button } from "react-bootstrap";
 
 const Cover = ({ title, login, coverImg }) => {
   if ((title, login, coverImg)) {
     return (
       <div
-        className="cover-page"
+        className="d-flex justify-content-center flex-column text-center "
         style={{ background: "#000", minHeight: "100vh" }}
       >
-        <div>
-          <img src={coverImg} alt="dao" />
-        </div>
-        <div className="loginBox">
-          <div>
-            <h1 style={{ margin: "1rem", color: "white" }}>{title}</h1>
-            <p style={{ margin: "0.5rem", color: "white" }}>
-              Please connect your wallet to continue.
-            </p>
-            <Button
-              onClick={login}
-              variant="outlined"
-              color="primary"
-              startIcon={<AccountBalanceWallet />}
-            >
-              Connect Wallet
-            </Button>
+        <div className="mt-auto text-light mb-5">
+          <div
+            className=" ratio ratio-1x1 mx-auto mb-2"
+            style={{ maxWidth: "320px" }}
+          >
+            <img src={coverImg} alt="flight" />
           </div>
-          <p style={{ color: "white" }}>Powered by Internet Computer</p>
+          <h1>{title}</h1>
+          <p>Please connect your wallet to continue.</p>
+          <Button
+            onClick={login}
+            variant="outline-light"
+            className="rounded-pill px-3 mt-3"
+          >
+            Connect Wallet
+          </Button>
         </div>
+        <p className="mt-auto text-secondary">Powered by Internet Computer</p>
       </div>
     );
   }

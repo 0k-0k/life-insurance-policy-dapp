@@ -1,6 +1,6 @@
 import React from "react";
 import { Dropdown, Stack } from "react-bootstrap";
-import { truncateAddress } from "../utils";
+import { truncateAddress } from "../utils/conversions";
 import { useState } from "react";
 
 const Wallet = ({
@@ -22,8 +22,10 @@ const Wallet = ({
   }
 
   const handleCopyClick = (text) => {
+    // Asynchronously call copyTextToClipboard
     copyTextToClipboard(text)
       .then(() => {
+        // If successful, update the isCopied state value
         setIsCopied(true);
         setTimeout(() => {
           setIsCopied(false);
